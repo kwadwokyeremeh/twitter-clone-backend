@@ -6,6 +6,8 @@ use App\Http\Requests\StoreTweetRequest;
 use App\Http\Requests\UpdateTweetRequest;
 use Illuminate\Http\Request;
 use App\Models\Tweet;
+use App\Models\User;
+use Illuminate\Foundation\Auth\User as Auth;
 
 class TweetController extends Controller
 {
@@ -31,7 +33,13 @@ class TweetController extends Controller
      */
     public function store(StoreTweetRequest $request)
     {
-        //
+        $user = User::where('id',35)->first();
+        auth()->login($user);
+
+        auth()->user()->tweets()->create([
+            'body' => $request->body,
+        ]);
+        
     }
 
     /**
