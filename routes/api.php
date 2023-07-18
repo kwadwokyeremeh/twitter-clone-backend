@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\TweetController;
@@ -23,3 +24,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/tweets',[TweetController::class,'store']);
 Route::get('/tweets', [TweetController::class,'index']);
 Route::get('/tweets/{tweet}',[TweetController::class,'show']);
+Route::get('/profile/{user}', [ProfileController::class,'show']);
+Route::get('/profile/{user}/tweets',[ProfileController::class,'index']);
