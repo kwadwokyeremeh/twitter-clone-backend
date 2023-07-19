@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Fortify\CreateNewUser;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -13,24 +17,32 @@ class ProfileController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(User $user)
+    public function index(User $user): LengthAwarePaginator
     {
         return $user->tweets()->with('user:id,name,username,avatar')->latest()->paginate(10);
     }
 
     /**
      * Show the form for creating a new resource.
+     * Creates a new user and returns a json user object
      */
-    public function create()
+    public function create(Request $request): JsonResponse
     {
-        //
+        $user = (new CreateNewUser)->create($request->all());
+        event(new Registered($user));
+        $token = $user->createToken($request->device_name)->plainTextToken;
+
+        return response()->json([
+            'token' => $token,
+            'user' => $user->only('id', 'name', 'email', 'username', 'avatar'),
+        ],201);
     }
 
     /**
      * Store a newly created resource in storage.
      * @throws ValidationException
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         Validator::make($request->input(),[
                 'email' => 'required|email',
@@ -56,7 +68,7 @@ class ProfileController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show(User $user): User
     {
         return $user;
     }

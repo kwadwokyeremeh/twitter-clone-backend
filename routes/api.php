@@ -25,6 +25,7 @@ Route::middleware(['auth:sanctum'])->delete('logout', function (Request $request
     return response()->json( 'Logged out',200);
 });
 Route::post('/login',[ProfileController::class,'store']);
+Route::post('/register',[ProfileController::class,'create']);
 
 Route::post('/tweets',[TweetController::class,'store']);
 Route::get('/tweets', [TweetController::class,'index']);

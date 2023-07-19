@@ -19,10 +19,11 @@ class CreateNewUser implements CreatesNewUsers
      * @param array<string, string> $input
      * @throws ValidationException
      */
-    public function create(array $input): User
+    public function create(array $input):User
     {
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
+            'userName' => ['required', 'string', 'min:4','max:255',Rule::unique(User::class)],
             'email' => [
                 'required',
                 'string',
@@ -33,10 +34,13 @@ class CreateNewUser implements CreatesNewUsers
             'password' => $this->passwordRules(),
         ])->validate();
 
+
         return User::create([
             'name' => $input['name'],
+            'username' => $input['userName'],
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
         ]);
+
     }
 }
