@@ -11,15 +11,20 @@ use \App\Http\Controllers\TweetController;
 |--------------------------------------------------------------------------
 |
 | Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
+| routes are loaded by the RouteServiceProvider within a group which
+| is assigned the "api" middleware group. Enjoy building your API!
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::middleware(['auth:sanctum'])->delete('logout', function (Request $request) {
+    $request->user()->currentAccessToken()->delete();
 
+    return response()->json( 'Logged out',200);
+});
+Route::post('/login',[ProfileController::class,'store']);
 
 Route::post('/tweets',[TweetController::class,'store']);
 Route::get('/tweets', [TweetController::class,'index']);
