@@ -71,6 +71,8 @@ class TweetController extends Controller
      */
     public function destroy(Tweet $tweet)
     {
-        //
+        abort_if($tweet->user->id != auth()->id(),403);
+        return response()->json($tweet->delete(),200);
+        
     }
 }

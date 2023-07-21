@@ -27,6 +27,7 @@ Route::middleware(['auth:sanctum'])->group(function (){
     });
     Route::get('tweets',[FollowController::class,'index']);
     Route::post('/tweets',[TweetController::class,'store']);
+    Route::delete('/tweets/{tweet}',[TweetController::class,'destroy']);
     Route::post('follow/{user}',[FollowController::class,'store']);
     Route::delete('unfollow/{user}',[FollowController::class,'destroy']);
     Route::get('is_following/{user}',[FollowController::class,'show']);
