@@ -25,10 +25,12 @@ class ProfileController extends Controller
     /**
      * Show the form for creating a new resource.
      * Creates a new user and returns a json user object
+     * @throws ValidationException
      */
     public function create(Request $request): JsonResponse
     {
         $user = (new CreateNewUser)->create($request->all());
+        $user->follows()->attach($user);
         event(new Registered($user));
         $token = $user->createToken($request->device_name)->plainTextToken;
 

@@ -20,6 +20,24 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
-        User::factory(70)->has(Tweet::factory(50))->create();
+        User::factory(120)->has(Tweet::factory(50))->create();
+        foreach (range(1,120) as $user){
+            User::find($user)->follows()->attach($user);
+        }
+        foreach ( range(1,40) as $user_id){
+            foreach (range(41,80) as $user_id2){
+                User::find($user_id)->follows()->attach(User::find($user_id2));
+            }
+        }
+        foreach ( range(41,80) as $user_id){
+            foreach (range(81,120) as $user_id2){
+                User::find($user_id)->follows()->attach(User::find($user_id2));
+            }
+        }
+        foreach ( range(81,120) as $user_id){
+            foreach (range(1,40) as $user_id2){
+                User::find($user_id)->follows()->attach(User::find($user_id2));
+            }
+        }
     }
 }

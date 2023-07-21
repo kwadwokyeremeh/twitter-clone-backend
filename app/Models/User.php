@@ -46,8 +46,13 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function tweets()
+    public function tweets(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Tweet::class);
+    }
+
+    public function follows(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany($this, 'follows','user_id', 'following_user_id');
     }
 }

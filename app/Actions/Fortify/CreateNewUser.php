@@ -39,6 +39,7 @@ class CreateNewUser implements CreatesNewUsers
             'name' => $input['name'],
             'username' => $input['userName'],
             'email' => $input['email'],
+            'avatar' => 'https://reactnative.dev/img/tiny_logo.png',
             'password' => Hash::make($input['password']),
         ]);
 

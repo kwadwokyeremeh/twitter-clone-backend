@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('username')->unique();
-            $table->string('avatar')->nullable();
+            $table->string('avatar')->default('https://reactnative.dev/img/tiny_logo.png');
             $table->text('profile')->nullable();
             $table->string('location')->nullable();
             $table->string('link')->nullable();
