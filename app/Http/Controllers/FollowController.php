@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Follow;
 use App\Models\Tweet;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class FollowController extends Controller
@@ -22,17 +23,19 @@ class FollowController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(User $user)
     {
-        //
+        auth()->user()->follow($user);
+        return response()->json('Followed',201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Follow $follow)
+    public function show(User $user)
     {
-        //
+    
+        return response()->json(auth()->user()->isFollowing($user),200);
     }
 
     /**
@@ -46,8 +49,9 @@ class FollowController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Follow $follow)
+    public function destroy(User $user)
     {
-        //
+        auth()->user()->unfollow($user);
+        return response()->json('UnFollowed',201);
     }
 }
